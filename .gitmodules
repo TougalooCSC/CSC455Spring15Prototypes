@@ -1,0 +1,3 @@
+[submodule "prototype01"]
+	path = prototype01
+	url = https://github.com/mjhea0/flask-boilerplate.git
