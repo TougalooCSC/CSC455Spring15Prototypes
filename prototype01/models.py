@@ -27,7 +27,6 @@ class TCBase:
         self.updated_at = self.created_at
         self.is_active = True
 
-
 class User(Base, TCBase):
     __tablename__ = 'users'
 
@@ -36,7 +35,8 @@ class User(Base, TCBase):
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(30))
 
-    # cards = relationship("FlashCard", order_by="FlashCard.id", backref="user")
+    cards = relationship("FlashCard", backref="creator", lazy='dynamic')
+    responses = relationship("FlashCardResponse", backref="responder", lazy='dynamic')
 
     def __init__(self, name=None, password=None):
         TCBase.__init__(self)
@@ -44,8 +44,8 @@ class User(Base, TCBase):
         self.password = password
         self.cards = []
 
-    def __repr__(self):
-        return '<User %r>' % self.name
+    # def __repr__(self):
+    #     return '<User %r>' % self.name
 
 
 class FlashCard(Base, TCBase):
@@ -56,7 +56,8 @@ class FlashCard(Base, TCBase):
     question_answer = db.Column(db.String(127))
     created_by = db.Column(db.Integer, ForeignKey('users.id'))
 
-    user = relationship("User", backref=backref('cards', order_by=id))
+    # user = relationship("User", backref=backref('cards', order_by=id))
+    responses = relationship("FlashCardResponse", backref="flashcard", lazy='dynamic')
 
     def __init__(self, question_text=None, question_answer=None, user=None):
         TCBase.__init__(self)
@@ -64,6 +65,35 @@ class FlashCard(Base, TCBase):
         self.question_answer = question_answer
         self.created_by = user.id
         self.user = user
+
+
+class FlashCardResponse(TCBase, Base):
+    __tablename__ = 'flashcard_responses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    response = db.Column(db.String(127))
+    flashcard_id = db.Column(db.Integer, ForeignKey('flashcards.id'))
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+
+    # user = relationship("User", backref=backref('responses_by', order_by=id))
+    # card = relationship("FlashCard", backref=backref('responses_to', order_by=id))
+
+    def __init__(self, flashcard=None, user=None, response=None):
+        TCBase.__init__(self)
+        if isinstance(flashcard, FlashCard):
+            self.flashcard_id = flashcard.id
+            self.flashcard = flashcard
+        elif type(flashcard) is int:
+            self.flashcard_id = flashcard
+        #TODO else throw error 'must provide flashcard'
+        if isinstance(user, User):
+            self.user_id = user.id
+            self.user = user
+        elif type(user) is int:
+            self.user_id = user
+        #TODO throw error 'must provide user'
+        self.response = response #Consider disallowing NULL values.
+
 
 # Create tables.
 Base.metadata.create_all(bind=engine)
