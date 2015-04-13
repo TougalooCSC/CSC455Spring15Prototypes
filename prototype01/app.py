@@ -9,7 +9,7 @@ from logging import Formatter, FileHandler
 from forms import *
 from models import *
 
-from views import users
+from views import users, flashcards, responses, decks
 
 # ----------------------------------------------------------------------------#
 # App Config.
@@ -70,28 +70,11 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-# @app.route('/users', methods=['GET'])
-# def get_users():
-#     users = User.query.all()
-#     return jsonify({'users': [{'id': user.id, 'name': user.name} for user in users]})
-#
-#
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     print 'args: ', request.args
-#     if not (request.args['name'] and request.args['password']):
-#         abort(404)
-#     name = request.args['name']
-#     password = request.args['password']
-#     user = User(name=name, password=password)
-#     db.session.add(user)
-#     db.session.commit()
-#     return jsonify({'user': {'id': user.id, 'name': user.name}})
-
-
 app.register_blueprint(users.mod)
+app.register_blueprint(flashcards.mod)
+app.register_blueprint(responses.mod)
+app.register_blueprint(decks.mod)
 # Error handlers.
-
 
 @app.errorhandler(500)
 def internal_error(error):

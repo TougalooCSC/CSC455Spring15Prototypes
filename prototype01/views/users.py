@@ -7,13 +7,19 @@ import models
 
 mod = Blueprint('user', __name__)
 
-
+# retrieve all
 @mod.route('/users', methods=['GET'])
 def get_users():
     users = models.User.query.all()
     return jsonify({'users': [{'id': user.id, 'name': user.name} for user in users]})
 
 
+# retrieve individual
+@mod.route('/users/<id>', methods=['GET'])
+def get_user():
+    return jsonify({'user': None})
+
+# create
 @mod.route('/users', methods=['POST'])
 def create_user():
     print 'args: ', request.args
@@ -25,3 +31,15 @@ def create_user():
     models.db_session.add(user)
     models.db_session.commit()
     return jsonify({'user': {'id': user.id, 'name': user.name}})
+
+# update
+@mod.route('/users/<id>', methods=['POST'])
+def update_user():
+    # write logic to update user here
+    return jsonify({'user': []})
+
+# delete
+@mod.route('/users/<id>', methods=['POST'])
+def delete_user():
+    # write logic to mark user inactive here
+    return jsonify({'user': []})
