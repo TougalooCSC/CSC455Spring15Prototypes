@@ -95,7 +95,7 @@ app.register_blueprint(users.mod)
 
 @app.errorhandler(500)
 def internal_error(error):
-    #db_session.rollback()
+    db_session.rollback()
     return render_template('errors/500.html'), 500
 
 
