@@ -85,14 +85,14 @@ class FlashCardResponse(TCBase, Base):
             self.flashcard = flashcard
         elif type(flashcard) is int:
             self.flashcard_id = flashcard
-        #TODO else throw error 'must provide flashcard'
+        # TODO else throw error 'must provide flashcard'
         if isinstance(user, User):
             self.user_id = user.id
             self.user = user
         elif type(user) is int:
             self.user_id = user
-        #TODO throw error 'must provide user'
-        self.response = response #Consider disallowing NULL values.
+        # TODO throw error 'must provide user'
+        self.response = response  # Consider disallowing NULL values.
 
 
 # Create tables.
