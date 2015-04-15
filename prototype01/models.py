@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy import Column, Integer, String
-from app import db
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Table
+# from app import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 
@@ -17,23 +17,24 @@ Base.query = db_session.query_property()
 
 # Set your classes here.
 class TCBase:
-    # id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime)
-    updated_at = db.Column(db.DateTime)
-    is_active = db.Column(db.Boolean)
+    # id = Column(Integer, primary_key=True)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
+    is_active = Column(Boolean)
 
     def __init__(self):
         self.created_at = datetime.utcnow()
         self.updated_at = self.created_at
         self.is_active = True
 
+
 class User(Base, TCBase):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(30))
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120), unique=True)
+    email = Column(String(120), unique=True)
+    password = Column(String(30))
 
     cards = relationship("FlashCard", backref="creator", lazy='dynamic')
     responses = relationship("FlashCardResponse", backref="responder", lazy='dynamic')
@@ -44,17 +45,17 @@ class User(Base, TCBase):
         self.password = password
         self.cards = []
 
-    # def __repr__(self):
-    #     return '<User %r>' % self.name
+        # def __repr__(self):
+        # return '<User %r>' % self.name
 
 
 class FlashCard(Base, TCBase):
     __tablename__ = 'flashcards'
 
-    id = db.Column(db.Integer, primary_key=True)
-    question_text = db.Column(db.String(256))
-    question_answer = db.Column(db.String(127))
-    created_by = db.Column(db.Integer, ForeignKey('users.id'))
+    id = Column(Integer, primary_key=True)
+    question_text = Column(String(256))
+    question_answer = Column(String(127))
+    created_by = Column(Integer, ForeignKey('users.id'))
 
     # user = relationship("User", backref=backref('cards', order_by=id))
     responses = relationship("FlashCardResponse", backref="flashcard", lazy='dynamic')
@@ -70,10 +71,10 @@ class FlashCard(Base, TCBase):
 class FlashCardResponse(TCBase, Base):
     __tablename__ = 'flashcard_responses'
 
-    id = db.Column(db.Integer, primary_key=True)
-    response = db.Column(db.String(127))
-    flashcard_id = db.Column(db.Integer, ForeignKey('flashcards.id'))
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    id = Column(Integer, primary_key=True)
+    response = Column(String(127))
+    flashcard_id = Column(Integer, ForeignKey('flashcards.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     # user = relationship("User", backref=backref('responses_by', order_by=id))
     # card = relationship("FlashCard", backref=backref('responses_to', order_by=id))
