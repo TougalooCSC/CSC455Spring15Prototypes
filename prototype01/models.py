@@ -38,6 +38,7 @@ class User(Base, TCBase):
 
     cards = relationship("FlashCard", backref="creator", lazy='dynamic')
     responses = relationship("FlashCardResponse", backref="responder", lazy='dynamic')
+    decks = relationship("Deck", backref="creator", lazy='dynamic')
 
     def __init__(self, name=None, password=None):
         TCBase.__init__(self)
@@ -94,6 +95,34 @@ class FlashCardResponse(TCBase, Base):
             self.user_id = user
         # TODO throw error 'must provide user'
         self.response = response  # Consider disallowing NULL values.
+
+
+card_decks = Table('card_decks',
+                      Base.metadata, # AttributeError thanks to stackoverflow.com Q/A
+                      Column('flashcard_id', Integer, ForeignKey('flashcards.id')),
+                      Column('deck_id', Integer, ForeignKey('decks.id'))
+)
+
+
+class Deck(TCBase, Base):
+    __tablename__ = 'decks'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(127))
+    created_by = Column(Integer, ForeignKey('users.id'))
+
+    cards = relationship('FlashCard', secondary=card_decks, backref='decks')
+
+    def __init__(self, title=None, created_by=None):
+        self.title = title
+        if type(created_by) == int:
+            self.created_by = created_by
+            self.creator = User.query.filter_by(id=created_by).first()
+        elif isinstance(created_by, User):
+            self.created_by = created_by.id
+            self.creator = created_by
+        else:
+            self.created_by = None
 
 
 # Create tables.
