@@ -25,7 +25,12 @@ def create_deck():
 # update
 @mod.route('/decks/<id>', methods=['POST'])
 def update_deck():
-    return jsonify({'deck': []})
+    deck_update = models.Deck.query.filter_by(id = id).first()
+    deck.title = new_title
+    deck.created_by = new_creator
+    deck.cards = new_cards
+    db_session.commit()
+    return jsonify({'user': None})
 
 # delete
 @mod.route('/decks/<id>', methods=['POST'])
