@@ -9,11 +9,9 @@ mod = Blueprint('flashcard', __name__)
 
 # retrieve multiple
 @mod.route('/flashcards', methods=['GET'])
-def get_flashcards():
-	# 1 get a list of flashcards
-	# create a list of dictionaries (hashtables)
-	# pass that list into the call to jsonify
-    return jsonify({'flashcards': []})
+def get_flashcards(id):
+    flashcard = models.FlashCard.query.all()
+    return jsonify({'flashcard': [{'id': flashcard.id, 'question': flashcard.question_text, 'answer': flashcard.question_answer, "creator": flashcard.created_by} for user in users]})
 
 
 # retrieve individual
