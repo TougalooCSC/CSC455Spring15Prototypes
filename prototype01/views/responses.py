@@ -43,4 +43,6 @@ def update_response():
 # delete
 @mod.route('/responses/<id>', methods=['POST'])
 def delete_response():
+    response_delete = models.Deck.query.filter_by(id = id).first()
+    response_delete.response = null
     return jsonify({'response': []})
