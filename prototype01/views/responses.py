@@ -14,7 +14,7 @@ def get_responses():
 
 # retrieve individual
 @mod.route('/responses/<id>', methods=['GET'])
-def get_response():
+def get_response(id):
     return jsonify({'response': None})
 
 # create
@@ -37,12 +37,12 @@ def create_response():
 
 # update
 @mod.route('/responses/<id>', methods=['POST'])
-def update_response():
+def update_response(id):
     return jsonify({'response': []})
 
 # delete
 @mod.route('/responses/<id>', methods=['POST'])
-def delete_response():
+def delete_response(id):
     response_delete = models.Deck.query.filter_by(id = id).first()
     response_delete.response = null
     return jsonify({'response': []})

@@ -9,14 +9,14 @@ mod = Blueprint('flashcard', __name__)
 
 # retrieve multiple
 @mod.route('/flashcards', methods=['GET'])
-def get_flashcards():
+def get_flashcards(id):
     flashcard = models.FlashCard.query.all()
     return jsonify({'flashcard': [{'id': flashcard.id, 'question': flashcard.question_text, 'answer': flashcard.question_answer, "creator": flashcard.created_by} for user in users]})
 
 
 # retrieve individual
 @mod.route('/flashcards/<id>', methods=['GET'])
-def get_flashcard():
+def get_flashcard(id):
     return jsonify({'flashcard': None})
 
 
@@ -41,11 +41,11 @@ def create_flashcard():
 
 # update
 @mod.route('/flashcards/<id>', methods=['POST'])
-def update_flashcard():
+def update_flashcard(id):
     return jsonify({'flashcard': []})
 
 
 # delete
 @mod.route('/flashcards/<id>', methods=['POST'])
-def delete_flashcard():
+def delete_flashcard(id):
     return jsonify({'flashcard': []})
