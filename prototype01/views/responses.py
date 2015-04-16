@@ -22,14 +22,14 @@ def get_response(id):
 def create_response():
     if not (request.args['question'] and request.args['answer'] and request.args['creator']):
         abort(404)
-    id = request.args['question']
+    flashcard_id = request.args['question']
     question_response = request.args['answer']
-    flashcard_id = request.args['creator']
-    user_id = models.User.query.filter_by(id=creator).first()
+    user_id = request.args['creator']
+    new_user_id = models.User.query.filter_by(id=user_id).first()
     if not user_id:
         print 'User with id: %d not found' % creator
         abort(404)
-    response = models.FlashCardResponse(question_text=question, question_answer=answer, user=user_id)
+    response = models.FlashCardResponse(response_flashcard=flashcard_id, response_user=user_id, response_text=response)
     models.db_session.add(response)
     models.db_session.commit()
     return jsonify({'response': {'id': response.id, 'question_response': response.question_response,
