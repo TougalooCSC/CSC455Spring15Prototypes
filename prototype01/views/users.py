@@ -16,7 +16,7 @@ def get_users():
 
 # retrieve individual
 @mod.route('/users/<id>', methods=['GET'])
-def get_user():
+def get_user(id):
     user_single = models.User.query.filter_by(id = id).first()
     return jsonify({'user': None})
 
@@ -35,7 +35,7 @@ def create_user():
 
 # update
 @mod.route('/users/<id>', methods=['POST'])
-def update_user():
+def update_user(id):
     # write logic to update user here
     return jsonify({'user': []})
 
