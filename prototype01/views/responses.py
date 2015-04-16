@@ -46,4 +46,6 @@ def delete_response(id):
     response_delete = models.Deck.query.filter_by(id = id).first()
     response_delete.is_active = false
     models.db_session.commit()
-    return jsonify({'response': []})
+    return jsonify({'response': {'id': response.id, 'question_response': response.question_response,
+                                  'flashcard_id': response.flashcard_id, 'user_id': response.user_id}})
+}})
