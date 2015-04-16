@@ -18,7 +18,7 @@ def get_users():
 @mod.route('/users/<id>', methods=['GET'])
 def get_user(id):
     user_single = models.User.query.filter_by(id = id).first()
-    return jsonify({'user': None})
+    return jsonify({'user': {'id': user.id, 'name': user.name}})
 
 # create
 @mod.route('/users', methods=['POST'])
