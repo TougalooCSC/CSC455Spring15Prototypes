@@ -10,12 +10,15 @@ mod = Blueprint('flashcard', __name__)
 # retrieve multiple
 @mod.route('/flashcards', methods=['GET'])
 def get_flashcards():
+	# 1 get a list of flashcards
+	# create a list of dictionaries (hashtables)
+	# pass that list into the call to jsonify
     return jsonify({'flashcards': []})
 
 
 # retrieve individual
 @mod.route('/flashcards/<id>', methods=['GET'])
-def get_flashcard():
+def get_flashcard(id):
     return jsonify({'flashcard': None})
 
 
@@ -40,11 +43,11 @@ def create_flashcard():
 
 # update
 @mod.route('/flashcards/<id>', methods=['POST'])
-def update_flashcard():
+def update_flashcard(id):
     return jsonify({'flashcard': []})
 
 
 # delete
 @mod.route('/flashcards/<id>', methods=['POST'])
-def delete_flashcard():
+def delete_flashcard(id):
     return jsonify({'flashcard': []})

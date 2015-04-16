@@ -14,7 +14,7 @@ def get_decks():
 
 # retrieve individual
 @mod.route('/decks/<id>', methods=['GET'])
-def get_deck():
+def get_deck(id):
     return jsonify({'deck': None})
 
 # create
@@ -24,10 +24,10 @@ def create_deck():
 
 # update
 @mod.route('/decks/<id>', methods=['POST'])
-def update_deck():
+def update_deck(id):
     return jsonify({'deck': []})
 
 # delete
 @mod.route('/decks/<id>', methods=['POST'])
-def delete_deck():
+def delete_deck(id):
     return jsonify({'deck': []})

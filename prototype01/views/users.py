@@ -16,7 +16,9 @@ def get_users():
 
 # retrieve individual
 @mod.route('/users/<id>', methods=['GET'])
-def get_user():
+def get_user(id):
+    # 1. query db via User.query to retrieve entry with id = <id>
+    # 2. create a dict with id, name
     return jsonify({'user': None})
 
 # create
@@ -34,7 +36,7 @@ def create_user():
 
 # update
 @mod.route('/users/<id>', methods=['POST'])
-def update_user():
+def update_user(id):
     # write logic to update user here
     return jsonify({'user': []})
 
