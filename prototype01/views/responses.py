@@ -29,11 +29,11 @@ def create_response():
     if not user_id:
         print 'User with id: %d not found' % creator
         abort(404)
-    response = models.FlashCardResponse(response_flashcard=flashcard_id, response_user=user_id, response_text=response)
+    response = models.FlashCardResponse(flashcard=flashcard_id, response_user=user_id, response_text=response)
     models.db_session.add(response)
     models.db_session.commit()
-    return jsonify({'response': {'id': response.id, 'question_response': response.question_response,
-                                  'flashcard_id': response.flashcard_id, 'user_id': response.user_id}})
+    return jsonify({'response': {'id': response.id, 'question_response': response.response,
+                                  'flashcard': flashcard_id, 'user': user_id}})
 
 # update
 @mod.route('/responses/<id>', methods=['POST'])
